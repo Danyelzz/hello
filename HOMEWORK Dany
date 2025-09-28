@@ -1,0 +1,78 @@
+PART 1 - Temps
+
+salary_year = float(input("Enter your annual salary in Lyon: "))
+portion_save = float(input("Enter the portion of salary to be saved, as a decimal: "))
+house_cost = float(input("Enter the cost of your dream home in Lyon: "))
+down_percent = 0.25
+r = 0.04
+months = 0
+savings = 0
+down_payment = house_cost * down_percent
+month_salary = salary_year / 12
+while savings < down_payment:
+    savings = savings + (savings * (r/12))
+    savings = savings + month_salary * portion_save
+    months = months + 1
+print("Number of months:", months)
+
+
+
+PART 2 - Avec augmentation
+
+start_salary = float(input("Enter your starting annual salary in Lyon: "))
+portion_save = float(input("Enter the portion of salary to be saved, as a decimal: "))
+house_cost = float(input("Enter the cost of your dream home in Lyon: "))
+semi_raise = float(input("Enter the semi-annual raise, as a decimal: "))
+down_percent = 0.25
+r = 0.04
+months = 0
+saved_money = 0
+down_payment = house_cost * down_percent
+month_salary = start_salary / 12
+while saved_money < down_payment:
+    saved_money = saved_money + saved_money * (r/12)
+    saved_money = saved_money + month_salary * portion_save
+    months = months + 1
+    if months % 6 == 0:
+        start_salary = start_salary + start_salary * semi_raise
+        month_salary = start_salary / 12
+print("Number of months:", months)
+
+
+
+
+PART 3 - Trouver le meilleur taux
+
+start_salary = float(input("Enter the starting salary in Lyon: "))
+down_payment = 1000000 * 0.25
+r = 0.04
+semi_raise = 0.07
+low = 0.0
+high = 1.0
+steps = 0
+epsilon = 100
+best_rate = None
+while low <= high:
+    steps = steps + 1
+    mid = (low + high) / 2
+    current_savings = 0
+    annual_sal = start_salary
+    monthly_sal = annual_sal / 12
+    for m in range(36):
+        current_savings = current_savings + current_savings * (r/12)
+        current_savings = current_savings + monthly_sal * mid
+        if (m + 1) % 6 == 0:
+            annual_sal = annual_sal + annual_sal * semi_raise
+            monthly_sal = annual_sal / 12
+    if abs(current_savings - down_payment) <= epsilon:
+        best_rate = mid
+        break
+    elif current_savings < down_payment:
+        low = mid
+    else:
+        high = mid
+if best_rate is not None:
+    print("Best savings rate:", round(best_rate, 4))
+    print("Steps in bisection search:", steps)
+else:
+    print("It is not possible to pay the down payment in three years.")
